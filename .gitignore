@@ -1,0 +1,6 @@
+/target
+cureq
+.gdb_history
+
+cureq.h
+libcureq.a

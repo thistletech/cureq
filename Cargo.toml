@@ -1,0 +1,11 @@
+[package]
+name = "cureq"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ureq = "2.10.0"
+
+[lib]
+name = "cureq"
+crate-type = ["staticlib"] # Creates static lib
