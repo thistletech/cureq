@@ -7,6 +7,7 @@ use std::io::Read;
 ///
 /// @fn ureq_get
 ///
+/// @param method: The HTTP method to use (e.g. "GET", "POST", "PUT", "DELETE")
 /// @param url: The URL to make the GET request to
 /// @param headers: A pointer to an array of headers. E.g. [["key, "value"], ["key2", "value2]]
 /// @param headers_count: The number of headers in the headers array
@@ -18,8 +19,8 @@ use std::io::Read;
 ///
 /// @return The HTTP status code returned, or -1 if an error occurred
 ///
-pub extern "C" fn cureq_call(method: *const c_char, url: *const c_char, headers: *mut *mut *mut c_char, headers_count: c_int, ret_buffer: *mut c_uchar, max_ret_buffer: c_int, ret_buffer_read: *mut c_int, payload: *mut c_uchar, payload_len: c_int) -> c_int {
-    if url.is_null() || ret_buffer.is_null() || max_ret_buffer == 0 {
+pub extern "C" fn cureq_call(method: *const c_char, url: *const c_char, headers: *const *const *const c_char, headers_count: c_int, ret_buffer: *mut c_uchar, max_ret_buffer: c_int, ret_buffer_read: *mut c_int, payload: *mut c_uchar, payload_len: c_int) -> c_int {
+    if method.is_null() || url.is_null() || ret_buffer.is_null() || max_ret_buffer == 0 || (payload.is_null() && payload_len > 0) {
         return -1;
     }
     let url = unsafe {

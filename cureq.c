@@ -10,9 +10,9 @@ int main() {
     char *payload = "some payload";
     int payload_len = strlen(payload);
 
-    char *header0[] = {"name0", "value0"};
-    char *header1[] = {"name1", "value1"};
-    char **headers[] = {header0, header1};
+    const char *header0[] = {"name0", "value0"};
+    const char *header1[] = {"name1", "value1"};
+    const char *const *headers[] = {header0, header1};
 
     fprintf(stderr, "Making a %s request to %s\n", method, url);
     fprintf(stderr, "Set headers: %s: %s, %s: %s\n", header0[0], header0[1], header1[0], header1[1]);

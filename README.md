@@ -4,9 +4,8 @@ Small C wrapper for [ureq](https://crates.io/crates/ureq).
 
 Example usage:
 ```c
-char *url = "https://httpbin.org/anything";
-char *header0[] = {"name0", "value0"};
-char **headers[] = {header0};
+const char *header0[] = {"name0", "value0"};
+const char *const *headers[] = {header0};
 int headers_cnt = 1;
 
 char buffer[5000];
