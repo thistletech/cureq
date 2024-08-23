@@ -99,8 +99,9 @@ pub extern "C" fn cureq_call(method: *const c_char, url: *const c_char, headers:
             break;
         }
         total_bytes_read += bytes_read;
-        if total_bytes_read >= max_ret_buffer as usize {
-            break;
+        if total_bytes_read > max_ret_buffer as usize {
+            // response is too large for ret_buffer
+            return -1;
         }
     };
 
