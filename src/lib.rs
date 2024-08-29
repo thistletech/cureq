@@ -3,7 +3,7 @@ use std::ffi::{c_int, c_uchar, c_char, CStr};
 use std::io::Read;
 
 #[no_mangle]
-/// Make a GET request to the given URL
+/// Perform a request to the given URL
 ///
 /// @fn ureq_get
 ///

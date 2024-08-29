@@ -2,7 +2,7 @@ build::
 	rm -rf cureq cureq.h
 	cargo build
 	cbindgen --lang c --output cureq.h
-	cc cureq.c -L./target/debug -lcureq -o cureq
+	cc -O3 -Wall cureq.c -L./target/debug -lcureq -o cureq
 
 run:: build
 	./cureq

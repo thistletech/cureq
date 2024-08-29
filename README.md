@@ -1,28 +1,45 @@
 # cureq
 
-Small C wrapper for [ureq](https://crates.io/crates/ureq).
+Small C wrapper for [ureq](https://crates.io/crates/ureq). Outputs a static lib that can be versy easily linked to a C project.
 
 Example usage:
 ```c
-const char *header0[] = {"name0", "value0"};
-const char *const *headers[] = {header0};
-int headers_cnt = 1;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "./cureq.h"
 
-char buffer[5000];
-int read_bytes = 0;
-int status = cureq_call("GET", url, headers_cnt, 1, buffer, sizeof(buffer), &read_bytes, NULL, 0);
-if (status == -1) {
-    fprintf(stderr, "Error fetching content!\n");
+int main() {
+    unsigned char buffer[5000];
+    char *url = "https://httpbin.org/anything";
+    char *method = "POST";
+    char *payload = "some payload";
+    int payload_len = strlen(payload);
+
+    const char *header0[] = {"name0", "value0"};
+    const char *const *headers[] = {header0};
+    int headers_count = 1;
+
+    fprintf(stderr, "Making a %s request to %s\n", method, url);
+    fprintf(stderr, "====================\n");
+
+    int read_bytes = 0;
+    int status = cureq_call(method, url, headers, headers_count, buffer, sizeof(buffer), &read_bytes, (unsigned char *) payload, payload_len);
+    if (status == -1) {
+        fprintf(stderr, "Error fetching content!\n");
+        return 1;
+    }
+
+    fprintf(stderr, "=> Status code: %d\n", status);
+    fprintf(stderr, "=> Response: %s\n", buffer);
+    return 0;
 }
-
-fprintf(stderr, "=> Status code: %d\n", status);
-fprintf(stderr, "=> Response: %s\n", buffer);
 ```
 
 Prototype:
 ```c
 /**
- * Perform a HTTP request
+ * Perform a request to the given URL
  *
  * @fn ureq_get
  *
@@ -41,11 +58,17 @@ Prototype:
  */
 int cureq_call(const char *method,
                const char *url,
-               char ***headers,
+               const char *const *const *headers,
                int headers_count,
                unsigned char *ret_buffer,
                int max_ret_buffer,
                int *ret_buffer_read,
                unsigned char *payload,
                int payload_len);
+```
+
+Build:
+```sh
+# requires make, rust, cargo, cbindgen, and a C compiler
+; make
 ```
